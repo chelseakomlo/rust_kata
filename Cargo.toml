@@ -1,0 +1,6 @@
+[package]
+name = "rust_kata"
+version = "0.1.0"
+authors = ["Chelsea Holland Komlo <me@chelseakomlo.com>"]
+
+[dependencies]
