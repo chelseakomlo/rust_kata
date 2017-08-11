@@ -2,7 +2,11 @@
 
 ### Purpose
 
+todo
+
 ### What you hopefully will learn
+
+todo
 
 ### The exercise
 
