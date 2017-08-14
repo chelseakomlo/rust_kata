@@ -21,6 +21,6 @@ How you can do this:
   - For each router name, compare it to all of the other router names using
     hamming distance. For names which are < 3 distance, this is considered a
     hit.
-  - Return a key/value list, where the key is the number of hits, and the value
-    are the matching router names.
+  - Return a list of pairs, where the first element in the pair is the number
+    of hits, and the second is the matching router names.
 
