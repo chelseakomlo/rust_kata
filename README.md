@@ -2,11 +2,8 @@
 
 ### Purpose
 
-todo
-
-### What you hopefully will learn
-
-todo
+To lwarn non-trivial Rust, fight with the borrow checker, and see some nice
+qualities of Rust and how that applies to tor.
 
 ### The exercise
 
@@ -24,3 +21,5 @@ How you can do this:
   - Return a list of pairs, where the first element in the pair is the number
     of hits, and the second is the matching router names.
 
+Bonus:
+  - Filter the top 5 names with the highest number of hits
