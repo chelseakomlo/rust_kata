@@ -2,7 +2,7 @@
 
 ### Purpose
 
-To lwarn non-trivial Rust, fight with the borrow checker, and see some nice
+To learn non-trivial Rust, fight with the borrow checker, and see some nice
 qualities of Rust and how that applies to tor.
 
 ### The exercise
@@ -20,6 +20,11 @@ How you can do this:
     hit.
   - Return a list of pairs, where the first element in the pair is the number
     of hits, and the second is the matching router names.
+
+To fetch the consensus:
+  - To start, just download the consensus directly, so you can start by writing
+    Rust to read/parse/calculate distance. Once this has been completed, check
+    out https://tokio.rs/ to do the work to fetch the consensus.
 
 Bonus:
   - Filter the top 5 names with the highest number of hits
