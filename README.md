@@ -16,8 +16,8 @@ How you can do this:
   - Filter the consensus for r (router) lines.
   - Extract the router name from each line.
   - For each router name, compare it to all of the other router names using
-    (Damerau-)Levenshtein distance. For names which are < 3 distance, this is
-    considered a match.
+    (Damerau-)Levenshtein distance (or optionally for toy cases, the Hamming
+    distance). For names which are < 3 distance, this is considered a match.
   - Return a `Vec<String>` (or another type, see the "Bonuses" section), where
     the `String`s are the matching router names.
 
