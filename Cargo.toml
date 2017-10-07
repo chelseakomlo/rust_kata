@@ -4,3 +4,4 @@ version = "0.1.0"
 authors = ["Chelsea Holland Komlo <me@chelseakomlo.com>"]
 
 [dependencies]
+levenshtein = "1.0.3"

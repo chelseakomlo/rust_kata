@@ -1,7 +1,11 @@
+extern crate levenshtein;
+
 use std::error::Error;
 use std::fs::File;
 use std::io::prelude::*;
 use std::path::Path;
+
+use levenshtein::*;
 
 fn read_consensus() -> String {
     let path = Path::new("consensus");
@@ -30,28 +34,9 @@ fn is_router_line(line: &str) -> bool {
     }
 }
 
-fn is_hamming_match(first_str: &str, second_str: &str) -> bool {
-    let mut first = first_str.chars();
-    let mut second = second_str.chars();
-
-    let mut hamming_count = 0;
-
-    while hamming_count <= 4 {
-        let first_char = match first.next() {
-            Some(n) => n,
-            None => break,
-        };
-        let second_char = match second.next() {
-            Some(n) => n,
-            None => break,
-        };
-
-        if first_char != second_char {
-            hamming_count += 1;
-        }
-    }
-
-    hamming_count < 3
+fn is_match(first: &str, second: &str) -> bool {
+    let distance = levenshtein(first, second);
+    distance <= 3
 }
 
 fn get_router_name(line: &str) -> Result<&str, &str> {
@@ -62,20 +47,20 @@ fn get_router_name(line: &str) -> Result<&str, &str> {
     }
 }
 
-struct HammingMatch<'a>{
+struct Match<'a>{
     count: u32,
     matches: Vec<&'a str>,
 }
 
-fn contains_match(name: &str, matches: &Vec<&str>) -> bool {
-    let hamming_matches = matches.iter()
-        .find(|x| is_hamming_match(&name, x));
+fn contains_match(name: &str, all: &Vec<&str>) -> bool {
+    let matches = all.iter()
+        .find(|x| is_match(&name, x));
 
-    hamming_matches.is_some()
+    matches.is_some()
 }
 
-fn get_hamming_matches(router_lines: Vec<&str>) -> Vec<HammingMatch> {
-    let mut all_router_matches:Vec<HammingMatch> = Vec::new();
+fn get_matches(router_lines: Vec<&str>) -> Vec<Match> {
+    let mut all_router_matches:Vec<Match> = Vec::new();
 
     for line in router_lines {
         let name = match get_router_name(line) {
@@ -98,7 +83,7 @@ fn get_hamming_matches(router_lines: Vec<&str>) -> Vec<HammingMatch> {
         }
 
         if num_matched == 0 {
-            let new_match = HammingMatch {
+            let new_match = Match {
                 count: 0,
                 matches: vec![name],
             };
@@ -120,11 +105,11 @@ fn main() {
                                 .collect::<Vec<&str>>();
 
     // Only interested in groups of size greater than one
-    let hamming_matches = get_hamming_matches(router_lines).iter()
+    let _matches = get_matches(router_lines).iter()
                                 .filter(|x| x.count > 1)
                                 .map(|x| x.matches.join(" ,"))
                                 .collect::<Vec<String>>()
                                 .join(" \n\n");
 
-    print!("{}", hamming_matches);
+    print!("{}", _matches);
 }
