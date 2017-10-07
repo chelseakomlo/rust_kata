@@ -27,8 +27,8 @@ fn read_consensus() -> String {
 }
 
 fn is_router_line(line: &str) -> bool {
-    let mut parts = line.split(" ");
-    match parts.nth(0) {
+    let name = line.split(" ").nth(0);
+    match name {
         Some(n) => n == "r",
         None => false,
     }
@@ -47,20 +47,14 @@ fn get_router_name(line: &str) -> Result<&str, &str> {
     }
 }
 
-struct Match<'a>{
-    count: u32,
-    matches: Vec<&'a str>,
-}
-
 fn contains_match(name: &str, all: &Vec<&str>) -> bool {
-    let matches = all.iter()
-        .find(|x| is_match(&name, x));
-
-    matches.is_some()
+    all.iter()
+       .find(|x| is_match(&name, x))
+       .is_some()
 }
 
-fn get_matches(router_lines: Vec<&str>) -> Vec<Match> {
-    let mut all_router_matches:Vec<Match> = Vec::new();
+fn get_matches(router_lines: Vec<&str>) -> Vec<Vec<&str>> {
+    let mut all_router_matches:Vec<Vec<&str>> = Vec::new();
 
     for line in router_lines {
         let name = match get_router_name(line) {
@@ -73,9 +67,8 @@ fn get_matches(router_lines: Vec<&str>) -> Vec<Match> {
         {
             num_matched = all_router_matches.iter_mut()
                 .filter_map(|x|  {
-                    if contains_match(&name, &x.matches) {
-                        x.matches.push(name);
-                        x.count += 1;
+                    if contains_match(&name, &x) {
+                        x.push(name);
                         return Some(x)
                     }
                     None
@@ -83,14 +76,9 @@ fn get_matches(router_lines: Vec<&str>) -> Vec<Match> {
         }
 
         if num_matched == 0 {
-            let new_match = Match {
-                count: 0,
-                matches: vec![name],
-            };
-
+            let new_match = vec![name];
             all_router_matches.push(new_match);
         }
-
     }
 
     all_router_matches
@@ -106,8 +94,8 @@ fn main() {
 
     // Only interested in groups of size greater than one
     let _matches = get_matches(router_lines).iter()
-                                .filter(|x| x.count > 1)
-                                .map(|x| x.matches.join(" ,"))
+                                .filter(|x| x.len() > 1)
+                                .map(|x| format!("count: {}, matches: {} \n", x.len().to_string(), &x.join(" ,")))
                                 .collect::<Vec<String>>()
                                 .join(" \n\n");
 
