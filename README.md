@@ -47,3 +47,8 @@ Any of the following are grounds for bonus points:
     server (preferably one belonging to either you or Tor :).
   - Sign the text document before submitting it.
   - Unittests and/or integration tests and/or benchmarks.
+
+#### Sample implementation
+
+An example implementation is on branch `impl` but please try at least one
+bonus exercise before looking at the sample implementation!
